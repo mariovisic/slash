@@ -1,7 +1,9 @@
 <%
 
+class UnexpectedMessageError extends Error {};
+
 class TestDouble {
-    def self.new(attributes) {
+    def self.new(attributes={}) {
         klass = Class.new;
 
         attributes.each(\attr {
@@ -14,6 +16,11 @@ class TestDouble {
                     value;
                 }
             });
+        });
+
+        klass.define_method("method_missing", \(args) {
+            message = "Test Double #{self} received unexpected message #{args}";
+            throw UnexpectedMessageError.new(message);
         });
         klass.new;
     }
