@@ -13,4 +13,10 @@ class TestDoubleTest extends Test {
         double = TestDouble.new({ "z" => \{ "x" } });
         assert_equal("x", double.z);
     }
+
+    def test_unexpected_message {
+        double = TestDouble.new();
+        assert_throws(UnexpectedMessageError, \{ double.undefined_method });
+        assert_throws(UnexpectedMessageError, \{ double.undefined_method("with_argument") });
+    }
 }.register;
